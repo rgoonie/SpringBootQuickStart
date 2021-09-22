@@ -1,6 +1,11 @@
 package io.github.rgoonie.springbootquickstart.topic;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,6 +16,9 @@ import java.util.List;
 @RequestMapping("/api")
 public class TopicController {
 
+    @Autowired
+    private TopicService topicService;
+
     /**
      * Gets all topic in DB
      * @return List of topics
@@ -18,10 +26,30 @@ public class TopicController {
     @GetMapping("/topics")
     public List<Topic> getAllTopics(){
 
-        return Arrays.asList(
-                Topic.builder().id("spring").name("Spring Framework").description("Spring Framework Description").build(),
-                Topic.builder().id("java").name("Core Java").description("Core Java Description").build(),
-                Topic.builder().id("javascript").name("JavaScript").description("JavaScript Description").build()
-        );
+        return topicService.getAllTopics();
+    }
+
+    /**
+     * Gets a topic based on the id provided
+     * @param id the id of the topic
+     * @return return topic from DB if exists
+     */
+    @GetMapping("/topics/{id}")
+    public Topic getTopicById(@PathVariable String id){
+
+        return topicService.getTopic(id);
+    }
+
+    @PostMapping("/topics")
+    public void createTopic(){
+    }
+
+    @PutMapping("/topic/{id}")
+    public void updateTopic(@PathVariable String id, Topic updatedTopic){
+    }
+
+    @DeleteMapping("/topic/{id}")
+    public void deleteTopic(@PathVariable String id){
+
     }
 }
