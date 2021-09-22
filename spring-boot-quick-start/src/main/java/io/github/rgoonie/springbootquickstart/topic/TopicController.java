@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,20 +37,21 @@ public class TopicController {
      */
     @GetMapping("/topics/{id}")
     public Topic getTopicById(@PathVariable String id){
-
         return topicService.getTopic(id);
     }
 
     @PostMapping("/topics")
-    public void createTopic(){
+    public void createTopic(@RequestBody Topic topic){
+        topicService.addTopic(topic);
     }
 
     @PutMapping("/topic/{id}")
-    public void updateTopic(@PathVariable String id, Topic updatedTopic){
+    public void updateTopic(@PathVariable String id, @RequestBody Topic topic){
+        topicService.updateTopic(id, topic);
     }
 
     @DeleteMapping("/topic/{id}")
     public void deleteTopic(@PathVariable String id){
-
+        topicService.deleteTopic(id);
     }
 }
