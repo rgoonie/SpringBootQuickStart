@@ -15,11 +15,11 @@ public class TopicService {
     private TopicRepository topicRepository;
 
     public List<Topic> getAllTopics(){
-        List<Topic> topicList = new ArrayList<>();
+        List<Topic> topics = new ArrayList<>();
         topicRepository.findAll()
-                .forEach(topicList::add);
+                .forEach(topics::add);
 
-        return topicList;
+        return topics;
 
     }
 
