@@ -1,54 +1,43 @@
 package io.github.rgoonie.springbootquickstart.topic;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TopicService {
 
-    List<Topic> topics = new ArrayList<Topic>(Arrays.asList(
-            Topic.builder().id("spring").name("Spring Framework").description("Spring Framework Description").build(),
-                Topic.builder().id("java").name("Core Java").description("Core Java Description").build(),
-                Topic.builder().id("javascript").name("JavaScript").description("JavaScript Description").build()
-    ));
+    @Autowired
+    private TopicRepository topicRepository;
 
     public List<Topic> getAllTopics(){
-        return topics;
+        List<Topic> topicList = new ArrayList<>();
+        topicRepository.findAll()
+                .forEach(topicList::add);
+
+        return topicList;
+
     }
 
     public Topic getTopic(String id){
-        for(Topic t : topics)
-            if(t.getId().equals(id))
-                return t;
-
-        return null;
+        Optional<Topic> topic = topicRepository.findById(id);
+        return topic.isPresent()? topic.get() : null;
     }
 
     public void addTopic(Topic topic){
-        topics.add(topic);
+        topicRepository.save(topic);
     }
 
     public void updateTopic(String id, Topic topic){
-        for(int i = 0; i < topics.size(); i++){
-            Topic t = topics.get(i);
-            if(t.getId().equals(id)) {
-                topics.set(i, topic);
-                return;
-            }
-        }
+        topicRepository.save(topic);
     }
 
     public void deleteTopic(String id){
-        for(int i = 0; i < topics.size(); i++){
-            Topic t = topics.get(i);
-            if(t.getId().equals(id)) {
-                topics.remove(i);
-                return;
-            }
-        }
+        topicRepository.deleteById(id);
     }
 
 }
